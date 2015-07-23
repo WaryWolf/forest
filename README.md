@@ -8,12 +8,13 @@ It simulates forest fires using a cellular automata algorithm.
 
  * works with arbitrary grid sizes, as long as they are divisible by 8
  * multiple output modes:
- --* PNG imageset (convertible to a movie with a makefile command)
- --* console output (driven by ncurses)
- --* null output (for benchmarking)
- --* checksum output (for debugging and verification)
+   * PNG imageset (convertible to a movie with a makefile command)
+   * console output (driven by ncurses)
+   * null output (for benchmarking)
+   * checksum output (for debugging and verification)
  * supports multithreading and parallelisation through OpenMP and MPI
 
+A (low quality, sorry) video of `forest` in action can be found [here](http://youtu.be/h70mjqcDA7k).
 
 ## Requirements
 
