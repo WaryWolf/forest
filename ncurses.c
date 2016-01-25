@@ -15,15 +15,13 @@ void init_ncurses(int x, int y) {
 void out_ncurses(forest* f) {
 
 
-    int x, y, s, t;
+    int x, y;
     cell* c;
-    s = f->dimX;
-    t = f->dimY;
     erase();
     
-    for (x = 0; x < s; x++) {
-        for (y = 0; y < t; y++) {
-            c = &f->newGrid[x][y];
+    for (y = 0; y < f->dimY; y++) {
+        for (x = 0; x < f->dimX; x++) {
+            c = &f->newGrid[y][x];
             switch(c->status) {
                 case EMPTY:
                     attron(COLOR_PAIR(1));
