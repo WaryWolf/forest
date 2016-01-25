@@ -1,6 +1,9 @@
 all: forest
 
-CFlags=-Wall -pedantic -std=gnu99 -lpng -lncurses -lcrypt
+CFlags=-Wall -pedantic -std=gnu99 -lpng -lncurses -lcrypt -Wno-unknown-pragmas
+
+test:
+	./test.sh
 
 forest: forest.c forest.h png.c ncurses.c
 	gcc -O2 forest.c png.c ncurses.c -o forest $(CFlags)

@@ -1,7 +1,7 @@
 # forest - a forest fire simulator written in C
 
 
-`forest` is a small C project that I wrote for a high performance computing class in 2013.
+`forest` is a small C project that I wrote for a high performance computing class in 2013, that I have updated periodically since.
 It simulates forest fires using a cellular automata algorithm.
 
 ## Features
@@ -21,6 +21,7 @@ A (low quality, sorry) video of `forest` in action can be found [here](http://yo
 ### Mandatory
 
  * GCC and make (*build-essentials* package on ubuntu)
+ * *libpng-dev* and *libncurses-dev* packages for PNG and ncurses output.
 
 ### Optional
 
@@ -47,9 +48,13 @@ once compiled, run the `forest` binary like so:
 
 `dimensionX` and `dimensionY` must both be divisible by 8.
 
-`output` should be one of 'png' 'ncurses' 'null' 'verify' 'log'.
+`output` should be one of 'png' 'ncurses' 'null' 'verify'.
 
-`simlength` should be greater than 1.
+`simlength` should be greater than 0 and less than INT_MAX (usually 2147483647)..
+
+## Tests
+
+Run `./test.sh` to perform some simple tests. These tests are driven by [assert.sh](https://github.com/lehmannro/assert.sh).
 
 ## Development Notes and Documentation
 
@@ -57,6 +62,8 @@ Latex documentation is included in the "tex" folder. run `make report-3` to comp
 
 
 ## License
+
+`forest` is licensed under the MIT license. `forest` makes use of [assert.sh](https://github.com/lehmannro/assert.sh) for testing, which is licensed under the [LGPL](http://www.gnu.org/licenses/lgpl-3.0.en.html).
 
 The MIT License (MIT)
 
