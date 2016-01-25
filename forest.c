@@ -437,7 +437,7 @@ void out_verify(forest* f) {
     char* res;
 
     if (f->time == f->simLength) {
-        fprintf(stderr,"Calculating grid integrity...\n");
+        fprintf(stdout,"Calculating grid integrity...\n");
         strGrid = (char*)malloc((sizeof(char) * f->dimX * f->dimY) + 1);
         if (strGrid == NULL) {
             fprintf(stderr,"malloc failed!\n");
@@ -471,15 +471,15 @@ void out_verify(forest* f) {
         }
 
         if (treeCheck == f->treeCount && burnCheck == f->burnCount) {
-            fprintf(stderr, "treeCount and burnCount okay\n");
+            fprintf(stdout, "treeCount and burnCount okay\n");
         } else {
-            fprintf(stderr, "error: treeCount = %d, treeCheck = %d\n", f->treeCount, treeCheck);
-            fprintf(stderr, "error: burnCount = %d, burnCheck = %d\n", f->burnCount, burnCheck);
+            fprintf(stdout, "error: treeCount = %d, treeCheck = %d\n", f->treeCount, treeCheck);
+            fprintf(stdout, "error: burnCount = %d, burnCheck = %d\n", f->burnCount, burnCheck);
         }
             
 
         res = crypt(strGrid, salt);
-        fprintf(stderr,"Grid checksum is: %s\n",res);
+        fprintf(stdout,"Grid checksum is: %s\n",res);
         
     
     }
@@ -728,28 +728,41 @@ cell** alloc_2d_grid(int x, int y) {
 /* parse argv for valid parameters and return as a struct */
 args* parse_args(int argc, char** argv) {
     
+    int len;
+
     args* myArgs = (args*)malloc(sizeof(args));
     if (myArgs == NULL) {
         fprintf(stderr,"malloc failed!\n");
         exit(17);
     }
+
+    char usage[] = "Usage: forest dimensionX dimensionY output simlength [log]\n";
+
     myArgs->logging = 0;
     switch(argc) {
         case 6:
             if (!strcmp(argv[5],"log")) {
                 myArgs->logging = 1;
             } else {
-                printf("Usage: forest dimensionX dimensionY output simlength {log}\n");
+                printf("%s", usage);
             }
         case 5:
             myArgs->dimX = atoi(argv[1]);
             myArgs->dimY = atoi(argv[2]);
             if (myArgs->dimX % 8 != 0 || myArgs->dimY % 8 != 0) {
                 printf("Error: please use mod8 grid dimensions\n");
-                printf("Usage: forest dimensionX dimensionY output simlength {log}\n");
+                printf("%s", usage);
                 exit(1);
             }
-            myArgs->simLength = atoi(argv[4]);
+
+            errno = 0;
+            len = strtol(argv[4], NULL, 10);
+            if ((errno == EINVAL) || (errno == ERANGE) || (len < 1) || (len > INT_MAX)) {
+                printf("Error: invalid simlength, please enter an integer between 1 and %d\n", INT_MAX);
+                printf("%s", usage);
+                exit(2);
+            }
+            myArgs->simLength = len;
 
             if (!strcmp(argv[3],"ncurses")) {
                 myArgs->output = NCURSES;
@@ -764,19 +777,17 @@ args* parse_args(int argc, char** argv) {
                 myArgs->output = VERIFY;
                 myArgs->out = out_verify;
             } else {
-                printf("Error: output should be one of 'png' 'ncurses' 'null' 'verify' 'log'\n");
-                printf("Usage: forest dimensionX dimensionY output simlength {log]\n");
+                printf("Error: output should be one of 'png' 'ncurses' 'null' 'verify'\n");
+                printf("%s", usage);
                 exit(1);
             }
 
             return myArgs;
         default:
-            printf("Usage: forest dimensionX dimensionY output simlength\n");
+            printf("%s", usage);
             exit(1);
     }
 
     return myArgs;
-    // shouldn't reach here but whatever
-    exit(1);
 }
 

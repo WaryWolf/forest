@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <ncurses.h>
 #include <crypt.h>
+#include <errno.h>
 
 #ifdef USING_OMP
 #include <omp.h>
